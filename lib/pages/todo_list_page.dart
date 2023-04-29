@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo_list_flutter/components/dialog_box.dart';
-import 'package:todo_list_flutter/components/todo_tile.dart';
+import 'package:todo_list_flutter/util/dialog_box.dart';
+import 'package:todo_list_flutter/util/todo_tile.dart';
 
 class TodoListPage extends StatefulWidget {
   const TodoListPage({Key? key}) : super(key: key);
@@ -12,23 +12,39 @@ class TodoListPage extends StatefulWidget {
 class _TodoListPageState extends State<TodoListPage> {
   final TextEditingController _textEditingController = TextEditingController();
 
-  List tasks = [
-    ["Make tutorial", false],
-    ["Do exercise", false],
-  ];
+  List tasks = [];
 
-  void checkBoxChanged(bool? value, index) {
+  void checkBoxChanged(bool? value, int index) {
     setState(() {
       tasks[index][1] = !tasks[index][1];
     });
   }
 
+  void onSaveTask() {
+    _textEditingController.text.isEmpty
+        ? null
+        : setState(() {
+            tasks.add([_textEditingController.text, false]);
+            _textEditingController.clear();
+            Navigator.of(context).pop();
+          });
+  }
+
   void createNewTask() {
     showDialog(
         context: context,
-        builder: (context) {
-          return DialogBox();
+        builder: (BuildContext context) {
+          return DialogBox(
+              textEditingController: _textEditingController,
+              onSave: onSaveTask,
+              onCancel: Navigator.of(context).pop);
         });
+  }
+
+  void deleteTask(int index) {
+    setState(() {
+      tasks.removeAt(index);
+    });
   }
 
   @override
@@ -43,16 +59,19 @@ class _TodoListPageState extends State<TodoListPage> {
           style: TextStyle(color: Colors.black),
         ),
       ),
-      body: ListView.builder(
-          itemCount: tasks.length,
-          itemBuilder: (context, index) {
-            return TodoTile(
+      body: SizedBox(
+        height: MediaQuery.of(context).size.height * 0.74,
+        child: ListView.builder(
+            itemCount: tasks.length,
+            itemBuilder: (context, index) {
+              return TodoTile(
                 taskName: tasks[index][0],
                 taskCompleted: tasks[index][1],
-                onCheckboxChanged: (value) {
-                  checkBoxChanged(value, index);
-                });
-          }),
+                onCheckboxChanged: (value) => checkBoxChanged(value, index),
+                deleteFunction: (context) => deleteTask(index),
+              );
+            }),
+      ),
       floatingActionButton: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisAlignment: MainAxisAlignment.end,
@@ -71,31 +90,3 @@ class _TodoListPageState extends State<TodoListPage> {
     );
   }
 }
-
-
-  // body:
-  //      Container(
-  //         padding: const EdgeInsets.all(24),
-  //         child: Column(
-  //           children: [
-  //             TextField(
-  //               controller: _textEditingController,
-  //             ),
-  //             SizedBox(
-  //               height: 316,
-  //               child: ListView.separated(
-  //                 separatorBuilder: (context, index) => const Divider(),
-  //                 itemBuilder: (context, index) {
-  //                   return (ListTile(
-  //                     title: Text(tasks[index]),
-  //                     onLongPress: () => setState(() {
-  //                       tasks.removeAt(index);
-  //                     }),
-  //                   ));
-  //                 },
-  //                 itemCount: tasks.length,
-  //               ),
-  //             )
-  //           ],
-  //         ))
-  //         ,
