@@ -4,9 +4,9 @@ class TodoTile extends StatelessWidget {
   final String taskName;
   final bool taskCompleted;
 
-  Function(bool?)? onCheckboxChanged;
+  final Function(bool?)? onCheckboxChanged;
 
-  TodoTile({
+  const TodoTile({
     Key? key,
     required this.taskName,
     required this.taskCompleted,
