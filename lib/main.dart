@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:todo_list_flutter/pages/todo_list_page.dart';
+import 'package:todo_list_flutter/pages/home_page.dart';
 
 void main() async {
   await Hive.initFlutter();
@@ -20,6 +20,6 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.green,
         ),
-        home: const TodoListPage());
+        home: const HomePage());
   }
 }

@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:todo_list_flutter/util/dialog_box.dart';
 import 'package:todo_list_flutter/util/todo_tile.dart';
 
-class TodoListPage extends StatefulWidget {
-  const TodoListPage({Key? key}) : super(key: key);
+class HomePage extends StatefulWidget {
+  const HomePage({Key? key}) : super(key: key);
 
   @override
-  State<TodoListPage> createState() => _TodoListPageState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _TodoListPageState extends State<TodoListPage> {
+class _HomePageState extends State<HomePage> {
   final TextEditingController _textEditingController = TextEditingController();
 
   List tasks = [];
